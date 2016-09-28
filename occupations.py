@@ -1,19 +1,20 @@
 from flask import Flask, render_template
-import jobpicker
+from utils import jobpicker as jp
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "hello"
+    return render_template('homepage.html', foo = 'Homepage', Link = "/occupations")
 
-main = jobpicker.convertToList('occupations.csv')
-randJob = jobpicker.randChooser(main)
+
 
 @app.route("/occupations")
 def tmplt():
-    return render_template('occupations.html', foo="Occupations", collection= main[1:], job = randJob, header = main[0])
+    main = jp.convertToList('data/occupations.csv')
+    return render_template('occupations.html', foo="Occupations", collection= main[1:], job = jp.randChooser(main), header = main[0])
     
 if __name__ == "__main__":
     app.debug = True 
     app.run()
+
